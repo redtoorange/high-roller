@@ -1,33 +1,46 @@
 <template>
-  <v-app>
-    <v-app-bar
-      app
-      color="blue darken-3"
-      dark
-    >
-        <v-toolbar-title>
-            40K - High Roller
-        </v-toolbar-title>
-    </v-app-bar>
+    <v-app>
+        <v-app-bar
+            app
+            color="blue darken-3"
+            dark
+        >
+            <v-toolbar-title>
+                40K - High Roller
+            </v-toolbar-title>
 
-    <v-main>
-        <v-container>
-            <router-view></router-view>
-        </v-container>
-    </v-main>
-  </v-app>
+            <v-toolbar-items class="hidden-sm-and-down ml-3">
+                <v-divider vertical></v-divider>
+
+<!--                <v-btn text to="/">-->
+<!--                    Home-->
+<!--                </v-btn>-->
+
+                <v-divider vertical></v-divider>
+
+                <v-btn text to="/melee" disabled>
+                    Melee
+                </v-btn>
+
+                <v-divider vertical></v-divider>
+
+                <v-btn text to="/ranged">
+                    Ranged
+                </v-btn>
+            </v-toolbar-items>
+        </v-app-bar>
+
+        <v-main>
+            <v-container>
+                <router-view></router-view>
+            </v-container>
+        </v-main>
+    </v-app>
 </template>
 
 <script>
 
 export default {
-  name: 'App',
-
-  components: {
-  },
-
-  data: () => ({
-    //
-  }),
+    name: 'App',
 };
 </script>

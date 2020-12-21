@@ -1,14 +1,29 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Ranged from "@/views/Ranged";
+import Melee from "@/views/Melee";
 
 Vue.use(VueRouter)
 
 const routes = [
+  // {
+  //   path: '/',
+  //   name: 'Home',
+  //   component: Home
+  // },
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    redirect: '/ranged'
+  },
+  {
+    path: '/melee',
+    name: 'Melee',
+    component: Melee
+  },
+  {
+    path: '/ranged',
+    name: 'Ranged',
+    component: Ranged
   },
 ]
 
