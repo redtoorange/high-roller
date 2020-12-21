@@ -40,51 +40,23 @@
             </v-col>
         </v-row>
 
-        <v-btn @click="roll" v-if="!results" color="primary">Simulate</v-btn>
+        <v-btn @click="roll" v-if="!results" color="primary">Simulate Rolls</v-btn>
+        <v-btn @click="roll" v-if="!results" color="secondary" class="ml-2" disabled>Percentages</v-btn>
 
-        <v-card v-if="results">
-            <v-card-title>
-                Simulation Results
-            </v-card-title>
-            <v-card-text>
-                <div>
-                    <h3>To Hit</h3>
-                    <p>Hits: {{ results.hitSuccessRolls }} </p>
-                    <p>Misses: {{ results.hitFailRolls }}</p>
-                    <p><strong>Total: {{ results.hitCount }}</strong></p>
-                </div>
-
-                <v-divider class="mb-3"></v-divider>
-
-                <div>
-                    <h3>To Wound</h3>
-                    <p>Wounded: {{ results.woundSuccessRolls }} </p>
-                    <p>Failed: {{ results.woundFailRolls }}</p>
-                    <p><strong>Total: {{ results.woundCount }}</strong></p>
-                </div>
-
-                <v-divider class="mb-3"></v-divider>
-
-                <div>
-                    <h3>Saving Throws</h3>
-                    <p>Saved: {{ results.saveSuccessRolls }} </p>
-                    <p>Failed: {{ results.saveFailRolls }}</p>
-                    <p><strong>Total: {{ results.failedSaves }}</strong></p>
-                </div>
-
-                <v-divider class="mb-3"></v-divider>
-
-                <div>
-                    <h3>
-                        Total Wounds: {{ results.failedSaves }}
-                    </h3>
-                </div>
-            </v-card-text>
-
-            <v-card-actions>
-                <v-btn @click="roll" color="primary">Re-Simulate</v-btn>
-            </v-card-actions>
-        </v-card>
+        <transition name="slide-fade">
+            <v-row v-if="results">
+                <v-col cols="12">
+                    <SimulatedRollComponent :results="results" ref="resultCard">
+                        <template v-slot:actions>
+                            <v-btn @click="roll" color="primary">Re-Simulate Rolls</v-btn>
+                            <v-btn @click="roll" color="secondary" class="ml-2" disabled ref="percent-button">
+                                Percentages
+                            </v-btn>
+                        </template>
+                    </SimulatedRollComponent>
+                </v-col>
+            </v-row>
+        </transition>
 
     </div>
 </template>
@@ -97,10 +69,12 @@ import HitSpecialRulesComponent from "@/components/ranged/HitSpecialRulesCompone
 import WoundSpecialRulesComponent from "@/components/ranged/WoundSpecialRulesComponent";
 import {mapGetters} from "vuex";
 import CalcEngine from "@/services/CalcEngine";
+import SimulatedRollComponent from "@/components/SimulatedRollComponent";
 
 export default {
     name: 'Home',
     components: {
+        SimulatedRollComponent,
         WoundSpecialRulesComponent,
         HitSpecialRulesComponent,
         DefenderComponent, WeaponStatComponent, AttackerComponent
@@ -114,14 +88,18 @@ export default {
     computed: {
         ...mapGetters('attacker', ['hitSpecialRules']),
         ...mapGetters('weapon', ['woundSpecialRules']),
+        pageHeight() {
+            return document.body.scrollHeight
+        }
     },
 
     methods: {
         roll() {
             const resultSet = CalcEngine.runCalculations(this.$store.state);
             console.log(resultSet);
-
             this.results = resultSet;
+
+            this.$vuetify.goTo(this.pageHeight);
         }
     }
 }

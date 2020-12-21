@@ -6,10 +6,10 @@
         <v-card-text>
             <v-form>
                 <v-row>
-                    <v-col cols="3">
+                    <v-col cols="12" md="3">
                         <v-text-field label="Toughness" type="number" v-model="toughness"/>
                     </v-col>
-                    <v-col cols="3">
+                    <v-col cols="12" md="3">
                         <v-text-field label="Armor Save" type="number" v-model="armorSave"/>
                     </v-col>
                     <v-col cols="6">

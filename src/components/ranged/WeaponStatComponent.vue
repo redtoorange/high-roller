@@ -6,21 +6,21 @@
         <v-card-text>
             <v-form>
                 <v-row>
-                    <v-col cols="3">
+                    <v-col cols="12" md="3">
                         <v-tooltip bottom>
                             <template v-slot:activator="{on, attrs}">
-                                <v-text-field v-bind="attrs" v-on="on" label="Attacks per Model" v-model="attacks"/>
+                                <v-text-field v-bind="attrs" v-on="on" label="Shots" v-model="attacks"/>
                             </template>
                             Enter a whole number of a dice roll like "1D6" or "2D3".
                         </v-tooltip>
                     </v-col>
-                    <v-col cols="3">
+                    <v-col cols="12" md="3">
                         <v-text-field label="Strength" type="number" v-model="strength"/>
                     </v-col>
-                    <v-col cols="3">
+                    <v-col cols="12" md="3">
                         <v-text-field label="Armor Penetration" type="number" v-model="armorPen"/>
                     </v-col>
-                    <v-col cols="3">
+                    <v-col cols="12" md="3">
                         <v-tooltip bottom>
                             <template v-slot:activator="{on, attrs}">
                                 <v-text-field v-bind="attrs" v-on="on" label="Damage" v-model="damage"/>

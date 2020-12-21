@@ -10,7 +10,7 @@ const attacker = {
         BS: null,
         hitSpecialRules: false,
         hitRules: {
-            mod: 0,
+            mod: null,
             reRollOnes: false,
             reRollMisses: false,
             explodingSixes: false
@@ -45,16 +45,16 @@ const weapon = {
         attacks: null,
         strength: null,
         armorPen: null,
-        damage: '',
+        damage: null,
         woundSpecialRules: false,
         woundRules: {
-            mod: 0,
+            mod: null,
             reRollOnes: false,
             reRollMisses: false,
             rending: false,
             rendRules: {
-                strength: 0,
-                armorPen: 0
+                strength: null,
+                armorPen: null
             },
         },
     },
