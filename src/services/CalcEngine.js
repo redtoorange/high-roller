@@ -61,7 +61,7 @@ class CalculationEngine {
         }
 
         // Do special rules
-        if (state.attacker.woundSpecialRules) {
+        if (state.weapon.woundSpecialRules) {
             console.log('Do Wound Special Rules here')
         }
 
@@ -85,37 +85,40 @@ class CalculationEngine {
         const armorSave = Number(state.defender.armorSave);
         const armorPen = Number(state.weapon.armorPen);
 
-        if (armorSave === null || armorSave + armorPen > 6) {
-            console.log('No saves: ', armorSave + armorPen);
-        }
-        const numRolls = resultSet.woundCount;
-
-        const saveRolls = [];
-        for (let i = 0; i < numRolls; i++) {
-            saveRolls.push(rollDice(6));
-        }
-
-        const successes = [];
-        const fails = [];
-        let actualSave = armorSave + armorPen;
-        if (state.defender.hasInvulnerable && state.defender.invulnerableSave > actualSave) {
-            resultSet.useInvulerable = true;
-            actualSave = state.defender.invulnerableSave;
+        if ((armorSave === null || armorSave + armorPen > 6) && !state.defender.hasInvulnerable) {
+            resultSet.failedSaves = resultSet.woundCount;
+            resultSet.saveSuccessRolls = [];
+            resultSet.saveFailRolls = [];
         } else {
-            resultSet.useInvulerable = false;
-        }
+            const numRolls = resultSet.woundCount;
 
-        for (let i = 0; i < saveRolls.length; i++) {
-            if (saveRolls[i] >= actualSave) {
-                successes.push(saveRolls[i]);
-            } else {
-                fails.push(saveRolls[i]);
+            const saveRolls = [];
+            for (let i = 0; i < numRolls; i++) {
+                saveRolls.push(rollDice(6));
             }
-        }
 
-        resultSet.failedSaves = fails.length;
-        resultSet.saveSuccessRolls = successes;
-        resultSet.saveFailRolls = fails;
+            const successes = [];
+            const fails = [];
+            let actualSave = armorSave + armorPen;
+            if (state.defender.hasInvulnerable && state.defender.invulnerableSave > actualSave) {
+                resultSet.useInvulerable = true;
+                actualSave = state.defender.invulnerableSave;
+            } else {
+                resultSet.useInvulerable = false;
+            }
+
+            for (let i = 0; i < saveRolls.length; i++) {
+                if (saveRolls[i] >= actualSave) {
+                    successes.push(saveRolls[i]);
+                } else {
+                    fails.push(saveRolls[i]);
+                }
+            }
+
+            resultSet.failedSaves = fails.length;
+            resultSet.saveSuccessRolls = successes;
+            resultSet.saveFailRolls = fails;
+        }
     }
 
 

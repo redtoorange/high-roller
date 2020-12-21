@@ -2,8 +2,7 @@
     <v-app>
         <v-app-bar
             app
-            color="blue darken-3"
-            dark
+            color="orange darken-3"
         >
             <v-toolbar-title>
                 40K - High Roller

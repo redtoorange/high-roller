@@ -24,12 +24,14 @@
                         <v-row>
                             <v-col>
                                 <transition name="slide-fade">
-                                    <v-text-field v-if="hasInvulnerable" label="Invulnerable Save" type="number" v-model="invulnerableSave"/>
+                                    <v-text-field v-if="hasInvulnerable" label="Invulnerable Save" type="number"
+                                                  v-model="invulnerableSave"/>
                                 </transition>
                             </v-col>
                             <v-col>
                                 <transition name="slide-fade">
-                                    <v-text-field v-if="hasFeelNoPain" label="Feel No Pain" type="number" v-model="feelNoPainSave"/>
+                                    <v-text-field v-if="hasFeelNoPain" label="Feel No Pain" type="number"
+                                                  v-model="feelNoPainSave"/>
                                 </transition>
                             </v-col>
                         </v-row>
@@ -47,52 +49,52 @@ export default {
     computed: {
         toughness: {
             get() {
-                return this.$store.state.toughness;
+                return this.$store.state.defender.toughness;
             },
             set(value) {
-                this.$store.commit('setToughness', value);
+                this.$store.commit('defender/setToughness', value);
             }
         },
         armorSave: {
             get() {
-                return this.$store.state.armorSave;
+                return this.$store.state.defender.armorSave;
             },
             set(value) {
-                this.$store.commit('setArmorSave', value);
+                this.$store.commit('defender/setArmorSave', value);
             }
         },
 
         hasInvulnerable: {
             get() {
-                return this.$store.getters.hasInvulnerable;
+                return this.$store.getters['defender/hasInvulnerable'];
             },
             set(value) {
-                this.$store.commit('setHasInvulnerable', value);
+                this.$store.commit('defender/setHasInvulnerable', value);
             }
         },
         invulnerableSave: {
             get() {
-                return this.$store.state.invulnerableSave;
+                return this.$store.state.defender.invulnerableSave;
             },
             set(value) {
-                this.$store.commit('setInvulnerableSave', value);
+                this.$store.commit('defender/setInvulnerableSave', value);
             }
         },
 
         hasFeelNoPain: {
             get() {
-                return this.$store.getters.hasFeelNoPain;
+                return this.$store.getters['defender/hasFeelNoPain'];
             },
             set(value) {
-                this.$store.commit('setHasFeelNoPain', value);
+                this.$store.commit('defender/setHasFeelNoPain', value);
             }
         },
         feelNoPainSave: {
             get() {
-                return this.$store.state.feelNoPainSave;
+                return this.$store.state.defender.feelNoPainSave;
             },
             set(value) {
-                this.$store.commit('setFeelNoPainSave', value);
+                this.$store.commit('defender/setFeelNoPainSave', value);
             }
         },
     },

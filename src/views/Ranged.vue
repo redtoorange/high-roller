@@ -112,7 +112,8 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['hitSpecialRules', 'woundSpecialRules']),
+        ...mapGetters('attacker', ['hitSpecialRules']),
+        ...mapGetters('weapon', ['woundSpecialRules']),
     },
 
     methods: {

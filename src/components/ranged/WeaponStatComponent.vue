@@ -41,34 +41,34 @@ export default {
     computed: {
         attacks: {
             get() {
-                return this.$store.state.attacks;
+                return this.$store.state.weapon.attacks;
             },
             set(value) {
-                this.$store.commit('setAttacks', value);
+                this.$store.commit('weapon/setAttacks', value);
             }
         },
         strength: {
             get() {
-                return this.$store.state.strength;
+                return this.$store.state.weapon.strength;
             },
             set(value) {
-                this.$store.commit('setStrength', value);
+                this.$store.commit('weapon/setStrength', value);
             }
         },
         armorPen: {
             get() {
-                return this.$store.state.armorPen;
+                return this.$store.state.weapon.armorPen;
             },
             set(value) {
-                this.$store.commit('setArmorPenetration', value);
+                this.$store.commit('weapon/setArmorPenetration', value);
             }
         },
         damage: {
             get() {
-                return this.$store.state.damage;
+                return this.$store.state.weapon.damage;
             },
             set(value) {
-                this.$store.commit('setDamage', value);
+                this.$store.commit('weapon/setDamage', value);
             }
         },
     },

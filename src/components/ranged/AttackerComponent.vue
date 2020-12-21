@@ -30,25 +30,26 @@ import {mapMutations} from "vuex";
 export default {
     name: "AttackerComponent",
     methods: {
-        ...mapMutations(['setHasHitRules', 'setHasWoundRules']),
+        ...mapMutations('attacker', ['setHasHitRules']),
+        ...mapMutations('weapon', ['setHasWoundRules']),
     },
 
     computed: {
         models: {
             get() {
-                return this.$store.state.models;
+                return this.$store.state.attacker.models;
             },
             set(value) {
-                this.$store.commit('setAttackerModels', value)
+                this.$store.commit('attacker/setAttackerModels', value)
             }
         },
 
         BS: {
             get() {
-                return this.$store.state.BS;
+                return this.$store.state.attacker.BS;
             },
             set(value) {
-                this.$store.commit('setBS', value)
+                this.$store.commit('attacker/setBS', value)
             }
         }
     }

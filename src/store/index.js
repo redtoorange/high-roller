@@ -4,11 +4,18 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 
 const attacker = {
+    namespaced: true,
     state: {
         models: null,
         BS: null,
         hitSpecialRules: false,
-        woundSpecialRules: false
+        hitRules: {
+            mod: 0,
+            reRollOnes: false,
+            reRollMisses: false,
+            explodingSixes: false
+        },
+
     },
     mutations: {
         setAttackerModels(state, payload) {
@@ -20,22 +27,36 @@ const attacker = {
         setHasHitRules(state, payload) {
             state.hitSpecialRules = payload;
         },
-        setHasWoundRules(state, payload) {
-            state.woundSpecialRules = payload;
-        },
+
+        setMod: (state, payload) => state.hitRules.mod = payload,
+        setReRollOnes: (state, payload) => state.hitRules.reRollOnes = payload,
+        setReRollMisses: (state, payload) => state.hitRules.reRollMisses = payload,
+        setExplodingSixes: (state, payload) => state.hitRules.explodingSixes = payload,
+
     },
     getters: {
         hitSpecialRules: state => state.hitSpecialRules,
-        woundSpecialRules: state => state.woundSpecialRules,
     }
 };
 
 const weapon = {
+    namespaced: true,
     state: {
         attacks: null,
         strength: null,
         armorPen: null,
-        damage: ''
+        damage: '',
+        woundSpecialRules: false,
+        woundRules: {
+            mod: 0,
+            reRollOnes: false,
+            reRollMisses: false,
+            rending: false,
+            rendRules: {
+                strength: 0,
+                armorPen: 0
+            },
+        },
     },
     mutations: {
         setAttacks(state, payload) {
@@ -44,10 +65,22 @@ const weapon = {
         setStrength: (state, payload) => state.strength = payload,
         setArmorPenetration: (state, payload) => state.armorPen = payload,
         setDamage: (state, payload) => state.damage = payload,
+        setHasWoundRules(state, payload) {
+            state.woundSpecialRules = payload;
+        },
+
+        setMod: (state, payload) => state.woundRules.mod = payload,
+        setReRollOnes: (state, payload) => state.woundRules.reRollOnes = payload,
+        setReRollMisses: (state, payload) => state.woundRules.reRollMisses = payload,
+        setRending: (state, payload) => state.woundRules.rending = payload,
     },
+    getters: {
+        woundSpecialRules: state => state.woundSpecialRules,
+    }
 };
 
 const defender = {
+    namespaced: true,
     state: {
         toughness: null,
         armorSave: null,
