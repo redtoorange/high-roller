@@ -6,7 +6,10 @@
         <v-card-text>
             <div>
                 <h2>To Hit</h2>
-                <p><strong>Hit Chance: {{ results.hitChance.toFixed(2)  * 100}}%</strong></p>
+                <div v-if="results.exploded">
+                    <p>Exploding added {{ results.explodingRolls.toFixed(2) }} rolls</p>
+                </div>
+                <p><strong>Hit Chance: {{ (results.hitChance * 100).toFixed(2) }}%</strong></p>
                 <h3>Hits: {{ results.hitCount.toFixed(2) }}</h3>
                 <p>Misses: {{ results.missCount.toFixed(2) }}</p>
             </div>
@@ -15,7 +18,7 @@
 
             <div>
                 <h2>To Wound</h2>
-                <p><strong>Wound Chance: {{ results.woundSuccessChance.toFixed(2)  * 100}}%</strong></p>
+                <p><strong>Wound Chance: {{ (results.woundSuccessChance * 100).toFixed(2) }}%</strong></p>
 
                 <h3>Wounds: {{ results.woundCount.toFixed(2) }} </h3>
                 <p>Failed: {{ results.woundFailCount.toFixed(2) }}</p>
@@ -25,7 +28,7 @@
 
             <div>
                 <h2>Saving Throws</h2>
-                <p><strong>Save Chance: {{ results.saveSuccessChance.toFixed(2) * 100 }}%</strong></p>
+                <p><strong>Save Chance: {{ (results.saveSuccessChance * 100).toFixed(2) }}%</strong></p>
                 <p>Saved: {{ results.passedSaves.toFixed(2) }} </p>
                 <h3>Failed: {{ results.failedSaves.toFixed(2) }}</h3>
                 <p v-if="results.useInvulerable"><strong>Used Invulnerable</strong></p>
@@ -38,7 +41,7 @@
                 <p>Damage Per Wound: {{ results.damagePerWound.toFixed(2) }} </p>
 
                 <div v-if="results.useFeelNoPain">
-                    <p><strong>Feel No Pain Chance: {{ results.feelNoPainChance.toFixed(2) * 100 }}%</strong></p>
+                    <p><strong>Feel No Pain Chance: {{ (results.feelNoPainChance * 100).toFixed(2) }}%</strong></p>
                     <p>Saved: {{ results.savedWounds.toFixed(2) }} </p>
                 </div>
                 <div>

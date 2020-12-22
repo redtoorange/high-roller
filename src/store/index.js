@@ -13,7 +13,8 @@ const attacker = {
             mod: null,
             reRollOnes: false,
             reRollMisses: false,
-            explodingSixes: false
+            exploding: false,
+            explodesOn: null,
         },
 
     },
@@ -31,7 +32,8 @@ const attacker = {
         setMod: (state, payload) => state.hitRules.mod = payload,
         setReRollOnes: (state, payload) => state.hitRules.reRollOnes = payload,
         setReRollMisses: (state, payload) => state.hitRules.reRollMisses = payload,
-        setExplodingSixes: (state, payload) => state.hitRules.explodingSixes = payload,
+        setExploding: (state, payload) => state.hitRules.exploding = payload,
+        setExplodesOn: (state, payload) => state.hitRules.explodesOn = payload,
 
     },
     getters: {

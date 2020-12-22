@@ -15,7 +15,8 @@
                     <v-checkbox label="Re-Roll Misses" v-model="reRollMisses"/>
                 </v-col>
                 <v-col cols="12" md="3">
-                    <v-checkbox label="Exploding 6's" v-model="explodingSixes"/>
+                    <v-checkbox label="Exploding" v-model="exploding"/>
+                    <v-text-field v-if="exploding" label="Explodes on?" v-model="explodesOn"></v-text-field>
                 </v-col>
             </v-row>
         </v-card-text>
@@ -51,12 +52,20 @@ export default {
                 this.$store.commit('attacker/setReRollMisses', value)
             }
         },
-        explodingSixes: {
+        exploding: {
             get() {
-                return this.$store.state.attacker.hitRules.explodingSixes;
+                return this.$store.state.attacker.hitRules.exploding;
             },
             set(value) {
-                this.$store.commit('attacker/setExplodingSixes', value)
+                this.$store.commit('attacker/setExploding', value)
+            }
+        },
+        explodesOn: {
+            get() {
+                return this.$store.state.attacker.hitRules.explodesOn;
+            },
+            set(value) {
+                this.$store.commit('attacker/setExplodesOn', value)
             }
         }
     }
