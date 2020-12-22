@@ -66,7 +66,7 @@ import DefenderComponent from "@/components/shared/DefenderStatComponent";
 import HitSpecialRulesComponent from "@/components/ranged/HitSpecialRulesComponent";
 import WoundSpecialRulesComponent from "@/components/ranged/WoundSpecialRulesComponent";
 import {mapGetters} from "vuex";
-import CalcEngine from "@/services/CalcEngine";
+import SimEngine from "@/services/SimEngine";
 
 export default {
     name: 'Home',
@@ -87,7 +87,7 @@ export default {
 
     methods: {
         roll() {
-            console.log(CalcEngine.runCalculations(this.$store.state))
+            console.log(SimEngine.runCalculations(this.$store.state))
         }
     }
 }

@@ -40,20 +40,35 @@
             </v-col>
         </v-row>
 
-        <v-btn @click="roll" v-if="!results" color="primary">Simulate Rolls</v-btn>
-        <v-btn @click="roll" v-if="!results" color="secondary" class="ml-2" disabled>Percentages</v-btn>
+        <v-btn @click="simulate" v-if="!results && !stats" color="primary" disabled>Simulate Rolls</v-btn>
+        <v-btn @click="statCalc" v-if="!results && !stats" color="secondary" class="ml-2">Percentages</v-btn>
 
         <transition name="slide-fade">
             <v-row v-if="results">
                 <v-col cols="12">
                     <SimulatedRollComponent :results="results" ref="resultCard">
                         <template v-slot:actions>
-                            <v-btn @click="roll" color="primary">Re-Simulate Rolls</v-btn>
-                            <v-btn @click="roll" color="secondary" class="ml-2" disabled ref="percent-button">
+                            <v-btn @click="simulate" color="primary" disabled>Re-Simulate Rolls</v-btn>
+                            <v-btn @click="statCalc" color="secondary" class="ml-2" ref="percent-button">
                                 Percentages
                             </v-btn>
                         </template>
                     </SimulatedRollComponent>
+                </v-col>
+            </v-row>
+        </transition>
+
+        <transition name="slide-fade">
+            <v-row v-if="stats">
+                <v-col cols="12">
+                    <StatisticsComponent :results="stats" ref="resultCard">
+                        <template v-slot:actions>
+                            <v-btn @click="simulate" color="primary" disabled>Re-Simulate Rolls</v-btn>
+                            <v-btn @click="statCalc" color="secondary" class="ml-2" ref="percent-button">
+                                Percentages
+                            </v-btn>
+                        </template>
+                    </StatisticsComponent>
                 </v-col>
             </v-row>
         </transition>
@@ -68,12 +83,15 @@ import DefenderComponent from "@/components/shared/DefenderStatComponent";
 import HitSpecialRulesComponent from "@/components/ranged/HitSpecialRulesComponent";
 import WoundSpecialRulesComponent from "@/components/ranged/WoundSpecialRulesComponent";
 import {mapGetters} from "vuex";
-import CalcEngine from "@/services/CalcEngine";
+import SimEngine from "@/services/SimEngine";
 import SimulatedRollComponent from "@/components/SimulatedRollComponent";
+import StatEngine from "@/services/StatEngine";
+import StatisticsComponent from "@/components/StatisticsComponent";
 
 export default {
     name: 'Home',
     components: {
+        StatisticsComponent,
         SimulatedRollComponent,
         WoundSpecialRulesComponent,
         HitSpecialRulesComponent,
@@ -82,6 +100,7 @@ export default {
     data() {
         return {
             results: null,
+            stats: null,
         };
     },
 
@@ -94,10 +113,20 @@ export default {
     },
 
     methods: {
-        roll() {
-            const resultSet = CalcEngine.runCalculations(this.$store.state);
+        simulate() {
+            this.stats = null;
+            const resultSet = SimEngine.runCalculations(this.$store.state);
             console.log(resultSet);
             this.results = resultSet;
+
+            this.$vuetify.goTo(this.pageHeight);
+        },
+
+        statCalc() {
+            this.results = null;
+            const resultSet = StatEngine.runCalculations(this.$store.state);
+            console.log(resultSet);
+            this.stats = resultSet;
 
             this.$vuetify.goTo(this.pageHeight);
         }

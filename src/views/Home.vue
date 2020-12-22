@@ -12,7 +12,7 @@
 
 <script>
 import {mapGetters} from "vuex";
-import CalcEngine from "@/services/CalcEngine";
+import SimEngine from "@/services/SimEngine";
 
 export default {
     name: 'Home',
@@ -29,7 +29,7 @@ export default {
 
     methods: {
         roll() {
-            console.log(CalcEngine.runCalculations(this.$store.state))
+            console.log(SimEngine.runCalculations(this.$store.state))
         }
     }
 }

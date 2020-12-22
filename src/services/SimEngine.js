@@ -1,6 +1,6 @@
 import {rollDice} from "@/services/DiceRoller";
 
-class CalculationEngine {
+class SimulationEngine {
     runCalculations(state) {
         const resultSet = {};
 
@@ -147,5 +147,5 @@ class CalculationEngine {
     }
 }
 
-const CalcEngine = new CalculationEngine();
-export default CalcEngine;
+const SimEngine = new SimulationEngine();
+export default SimEngine;
