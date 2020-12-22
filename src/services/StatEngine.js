@@ -98,8 +98,7 @@ class StatisticalEngine {
             resultSet.woundCount = wounds;
             resultSet.woundFailCount = numRolls - wounds;
             resultSet.woundSuccessChance = woundChance;
-        }
-        else {
+        } else {
             const percent = numRolls * (1 / 6);
             const rolls = [0, percent, percent, percent, percent, percent, percent];
 

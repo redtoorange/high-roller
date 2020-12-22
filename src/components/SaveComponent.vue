@@ -38,6 +38,7 @@ export default {
 .smooth-enter-active, .smooth-leave-active {
     transition: max-height .5s;
 }
+
 .smooth-enter, .smooth-leave-to {
     max-height: 0;
 }

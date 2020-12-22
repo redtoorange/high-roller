@@ -1,5 +1,7 @@
 # high-roller
 
+[Live Demo](http://highroller.andrewmcguiness.com/)
+
 ## Project setup
 ```
 npm install
