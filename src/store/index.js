@@ -38,6 +38,8 @@ const attacker = {
     },
     getters: {
         hitSpecialRules: state => state.hitSpecialRules,
+        BS: state => state.BS,
+        models: state => state.models,
     }
 };
 
@@ -78,6 +80,12 @@ const weapon = {
     },
     getters: {
         woundSpecialRules: state => state.woundSpecialRules,
+
+        attacks: state => state.attacks,
+        strength: state => state.strength,
+        armorPen: state => state.armorPen,
+        damage: state => state.damage,
+
     }
 };
 
@@ -103,6 +111,7 @@ const defender = {
     getters: {
         hasInvulnerable: state => state.hasInvulnerable,
         hasFeelNoPain: state => state.hasFeelNoPain,
+        toughness: state => state.toughness,
     },
 };
 

@@ -41,7 +41,9 @@
         </v-row>
 
         <v-btn @click="simulate" v-if="!results && !stats" color="primary" disabled>Simulate Rolls</v-btn>
-        <v-btn @click="statCalc" v-if="!results && !stats" color="secondary" class="ml-2">Percentages</v-btn>
+        <v-btn @click="statCalc" v-if="!results && !stats" color="secondary" class="ml-2" :disabled="!formValid">
+            Percentages
+        </v-btn>
 
         <transition name="slide-fade">
             <v-row v-if="results">
@@ -49,7 +51,8 @@
                     <SimulatedRollComponent :results="results" ref="resultCard">
                         <template v-slot:actions>
                             <v-btn @click="simulate" color="primary" disabled>Re-Simulate Rolls</v-btn>
-                            <v-btn @click="statCalc" color="secondary" class="ml-2" ref="percent-button">
+                            <v-btn @click="statCalc" color="secondary" class="ml-2" ref="percent-button"
+                                   :disabled="!formValid">
                                 Percentages
                             </v-btn>
                         </template>
@@ -64,7 +67,8 @@
                     <StatisticsComponent :results="stats" ref="resultCard">
                         <template v-slot:actions>
                             <v-btn @click="simulate" color="primary" disabled>Re-Simulate Rolls</v-btn>
-                            <v-btn @click="statCalc" color="secondary" class="ml-2" ref="percent-button">
+                            <v-btn @click="statCalc" color="secondary" class="ml-2" ref="percent-button"
+                                   :disabled="!formValid">
                                 Percentages
                             </v-btn>
                         </template>
@@ -105,10 +109,23 @@ export default {
     },
 
     computed: {
-        ...mapGetters('attacker', ['hitSpecialRules']),
-        ...mapGetters('weapon', ['woundSpecialRules']),
+        ...mapGetters('attacker', ['hitSpecialRules', 'models', 'BS']),
+        ...mapGetters('weapon', ['woundSpecialRules', 'attacks', 'strength', 'armorPen', 'damage']),
+        ...mapGetters('defender', ['toughness']),
         pageHeight() {
             return document.body.scrollHeight
+        },
+
+        formValid(otherGetters) {
+            return !(
+                otherGetters.models == null ||
+                otherGetters.BS == null ||
+                otherGetters.attacks == null ||
+                otherGetters.strength == null ||
+                otherGetters.armorPen == null ||
+                otherGetters.damage == null ||
+                otherGetters.toughness == null
+            );
         }
     },
 

@@ -156,10 +156,13 @@ class StatisticalEngine {
 
     processSaves(state, resultSet) {
         const armorSave = Number(state.defender.armorSave);
+        console.log(armorSave)
         const armorPen = Number(state.weapon.armorPen);
 
-        if ((armorSave === null || armorSave + armorPen > 6) && !state.defender.hasInvulnerable) {
+        if ((!armorSave || armorSave + armorPen > 6) && !state.defender.hasInvulnerable) {
             resultSet.failedSaves = resultSet.woundCount;
+            resultSet.passedSaves = 0;
+
             resultSet.saveSuccessChance = 0;
         } else {
             const numRolls = resultSet.woundCount;
