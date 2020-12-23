@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import AttackerComponent from "@/components/ranged/AttackerComponent";
+import AttackerComponent from "@/components/ranged/RangedAttackerComponent";
 import WeaponStatComponent from "@/components/ranged/WeaponStatComponent";
 import DefenderComponent from "@/components/shared/DefenderStatComponent";
 import HitSpecialRulesComponent from "@/components/ranged/HitSpecialRulesComponent";
@@ -93,7 +93,7 @@ import StatEngine from "@/services/StatEngine";
 import StatisticsComponent from "@/components/StatisticsComponent";
 
 export default {
-    name: 'Home',
+    name: 'Ranged',
     components: {
         StatisticsComponent,
         SimulatedRollComponent,

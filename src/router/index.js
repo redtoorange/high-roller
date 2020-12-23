@@ -13,7 +13,7 @@ const routes = [
     // },
     {
         path: '/',
-        redirect: '/ranged'
+        redirect: '/melee'
     },
     {
         path: '/melee',

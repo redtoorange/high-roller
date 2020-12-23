@@ -14,7 +14,7 @@
             <v-toolbar-items class="ml-3 hidden-sm-and-down">
                 <v-divider vertical></v-divider>
 
-                <v-btn text to="/melee" disabled>
+                <v-btn text to="/melee">
                     Melee
                 </v-btn>
 
@@ -51,7 +51,7 @@
                 nav
             >
                 <v-list-item-group>
-                    <v-list-item to="/melee" disabled>
+                    <v-list-item to="/melee">
                         <v-list-item-title>Melee</v-list-item-title>
                     </v-list-item>
 
