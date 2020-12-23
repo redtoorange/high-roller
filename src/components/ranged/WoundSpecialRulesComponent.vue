@@ -29,34 +29,34 @@ export default {
     computed: {
         mod: {
             get() {
-                return this.$store.state.weapon.woundRules.mod;
+                return this.$store.state.ranged.weapon.woundRules.mod;
             },
             set(value) {
-                this.$store.commit('weapon/setMod', value);
+                this.$store.commit('ranged/weapon/setMod', value);
             }
         },
         reRollOnes: {
             get() {
-                return this.$store.state.weapon.woundRules.reRollOnes;
+                return this.$store.state.ranged.weapon.woundRules.reRollOnes;
             },
             set(value) {
-                this.$store.commit('weapon/setReRollOnes', value);
+                this.$store.commit('ranged/weapon/setReRollOnes', value);
             }
         },
         reRollMisses: {
             get() {
-                return this.$store.state.weapon.woundRules.reRollMisses;
+                return this.$store.state.ranged.weapon.woundRules.reRollMisses;
             },
             set(value) {
-                this.$store.commit('weapon/setReRollMisses', value);
+                this.$store.commit('ranged/weapon/setReRollMisses', value);
             }
         },
         rending: {
             get() {
-                return this.$store.state.weapon.woundRules.rending;
+                return this.$store.state.ranged.weapon.woundRules.rending;
             },
             set(value) {
-                this.$store.commit('weapon/setRending', value);
+                this.$store.commit('ranged/weapon/setRending', value);
             }
         }
     }

@@ -30,42 +30,42 @@ export default {
     computed: {
         mod: {
             get() {
-                return this.$store.state.attacker.hitRules.mod
+                return this.$store.state.attacker.ranged.hitRules.mod
             },
             set(value) {
-                this.$store.commit('attacker/setMod', value)
+                this.$store.commit('ranged/attacker/setMod', value)
             }
         },
         reRollOnes: {
             get() {
-                return this.$store.state.attacker.hitRules.reRollOnes;
+                return this.$store.state.attacker.ranged.hitRules.reRollOnes;
             },
             set(value) {
-                this.$store.commit('attacker/setReRollOnes', value)
+                this.$store.commit('ranged/attacker/setReRollOnes', value)
             }
         },
         reRollMisses: {
             get() {
-                return this.$store.state.attacker.hitRules.reRollMisses;
+                return this.$store.state.attacker.ranged.hitRules.reRollMisses;
             },
             set(value) {
-                this.$store.commit('attacker/setReRollMisses', value)
+                this.$store.commit('ranged/attacker/setReRollMisses', value)
             }
         },
         exploding: {
             get() {
-                return this.$store.state.attacker.hitRules.exploding;
+                return this.$store.state.attacker.ranged.hitRules.exploding;
             },
             set(value) {
-                this.$store.commit('attacker/setExploding', value)
+                this.$store.commit('ranged/attacker/setExploding', value)
             }
         },
         explodesOn: {
             get() {
-                return this.$store.state.attacker.hitRules.explodesOn;
+                return this.$store.state.attacker.ranged.hitRules.explodesOn;
             },
             set(value) {
-                this.$store.commit('attacker/setExplodesOn', value)
+                this.$store.commit('ranged/attacker/setExplodesOn', value)
             }
         }
     }
