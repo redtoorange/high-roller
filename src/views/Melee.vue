@@ -17,7 +17,7 @@
             <transition name="slide-fade">
                 <v-row v-if="hitSpecialRules">
                     <v-col cols="12">
-                        <HitSpecialRulesComponent/>
+                        <HitSpecialRulesComponent type="melee"/>
                     </v-col>
                 </v-row>
             </transition>
@@ -25,7 +25,7 @@
             <transition name="slide-fade">
                 <v-row v-if="woundSpecialRules">
                     <v-col cols="12">
-                        <WoundSpecialRulesComponent/>
+                        <WoundSpecialRulesComponent type="melee"/>
                     </v-col>
                 </v-row>
             </transition>
@@ -63,8 +63,8 @@
 
 <script>
 import DefenderComponent from "@/components/shared/DefenderStatComponent";
-import HitSpecialRulesComponent from "@/components/ranged/HitSpecialRulesComponent";
-import WoundSpecialRulesComponent from "@/components/ranged/WoundSpecialRulesComponent";
+import HitSpecialRulesComponent from "@/components/shared/HitSpecialRulesComponent";
+import WoundSpecialRulesComponent from "@/components/shared/WoundSpecialRulesComponent";
 import {mapGetters} from "vuex";
 import StatisticsComponent from "@/components/StatisticsComponent";
 import StatEngine from "@/services/StatEngine";

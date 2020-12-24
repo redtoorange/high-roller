@@ -16,7 +16,7 @@
             <transition name="slide-fade">
                 <v-row v-if="hitSpecialRules">
                     <v-col cols="12">
-                        <HitSpecialRulesComponent/>
+                        <HitSpecialRulesComponent type="ranged"/>
                     </v-col>
                 </v-row>
             </transition>
@@ -24,7 +24,7 @@
             <transition name="slide-fade">
                 <v-row v-if="woundSpecialRules">
                     <v-col cols="12">
-                        <WoundSpecialRulesComponent/>
+                        <WoundSpecialRulesComponent type="ranged"/>
                     </v-col>
                 </v-row>
             </transition>
@@ -65,8 +65,8 @@
 import AttackerComponent from "@/components/ranged/RangedAttackerComponent";
 import WeaponStatComponent from "@/components/ranged/WeaponStatComponent";
 import DefenderComponent from "@/components/shared/DefenderStatComponent";
-import HitSpecialRulesComponent from "@/components/ranged/HitSpecialRulesComponent";
-import WoundSpecialRulesComponent from "@/components/ranged/WoundSpecialRulesComponent";
+import HitSpecialRulesComponent from "@/components/shared/HitSpecialRulesComponent";
+import WoundSpecialRulesComponent from "@/components/shared/WoundSpecialRulesComponent";
 import {mapGetters} from "vuex";
 import StatEngine from "@/services/StatEngine";
 import StatisticsComponent from "@/components/StatisticsComponent";

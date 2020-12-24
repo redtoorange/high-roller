@@ -15,7 +15,13 @@
                     <v-text-field label="Strength*" type="number" v-model="strength" :rules="notEmpty"/>
                 </v-col>
                 <v-col cols="12" md="2">
-                    <v-text-field label="Attacks*" type="number" v-model="attacks" :rules="notEmpty"/>
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{on, attrs}">
+                            <v-text-field v-bind="attrs" v-on="on" label="Attacks*" v-model="attacks"
+                                          :rules="notEmpty"/>
+                        </template>
+                        Enter a whole number or a dice roll like "D6" or "2D3".
+                    </v-tooltip>
                 </v-col>
                 <v-col cols="12" md="2">
                     <v-checkbox label="To Hit Special Rules" @change="setHasHitRules($event)"/>

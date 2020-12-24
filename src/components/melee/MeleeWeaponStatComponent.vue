@@ -6,20 +6,24 @@
         <v-card-text>
             <v-row>
                 <v-col cols="12" md="3">
-                    <v-text-field label="Strength" type="number" v-model="strength"/>
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{on, attrs}">
+                            <v-text-field v-bind="attrs" v-on="on" label="Strength" v-model="strength"/>
+                        </template>
+                        Leave blank to use model's Strength; enter a Whole number to override; enter an 'X2' for a
+                        multiplier.
+                    </v-tooltip>
                 </v-col>
                 <v-col cols="12" md="3">
                     <v-text-field label="Armor Penetration" type="number" v-model="armorPen"/>
                 </v-col>
                 <v-col cols="12" md="3">
-                    <!--                        <v-tooltip bottom>-->
-                    <!--                            <template v-slot:activator="{on, attrs}">-->
-                    <!--                                <v-text-field v-bind="attrs" v-on="on" label="Damage" v-model="damage"/>-->
-                    <!--                            </template>-->
-                    <!--                            Enter a whole number of a dice roll like "1D6" or "2D3".-->
-                    <!--                        </v-tooltip>-->
-
-                    <v-text-field type="number" label="Damage*" v-model="damage" :rules="notEmpty"/>
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{on, attrs}">
+                            <v-text-field v-bind="attrs" v-on="on" label="Damage*" v-model="damage" :rules="notEmpty"/>
+                        </template>
+                        Enter a whole number or a dice roll like "D6" or "2D3".
+                    </v-tooltip>
                 </v-col>
             </v-row>
         </v-card-text>
@@ -30,7 +34,7 @@
 export default {
     name: "MeleeWeaponStatComponent",
 
-    data(){
+    data() {
         return {
             notEmpty: [v => !!v || 'Required Field']
         };

@@ -3,21 +3,22 @@ class StatisticalEngine {
         const resultSet = {};
 
         if (type === 'MELEE') {
-            this.processToHitRanged(state, resultSet);
-            this.processToWound(state, resultSet);
-            this.processSaves(state, resultSet);
-            this.processDamage(state, resultSet);
-        } else if (type === 'RANGED') {
             this.processToHitMelee(state, resultSet);
-            this.processToWound(state, resultSet);
-            this.processSaves(state, resultSet);
-            this.processDamage(state, resultSet);
+            this.processToWoundMelee(state, resultSet);
+            this.processSaves(state, resultSet, 'melee');
+            this.processDamage(state, resultSet, 'melee');
+        } else if (type === 'RANGED') {
+            this.processToHitRanged(state, resultSet);
+            this.processToWoundRanged(state, resultSet);
+            this.processSaves(state, resultSet, 'ranged');
+            this.processDamage(state, resultSet, 'ranged');
         }
 
 
         return resultSet;
     }
 
+    // Ranged Section
     processToHitRanged(state, resultSet) {
         const models = Number(state.ranged.attacker.models);
         const attacks = Number(state.ranged.weapon.attacks);
@@ -99,88 +100,7 @@ class StatisticalEngine {
         }
     }
 
-    processToHitMelee(state, resultSet) {
-        const models = Number(state.melee.attacker.models);
-        const attacks = Number(state.melee.attacker.attacks);
-        const numRolls = models * attacks;
-        const hasHitRules = state.melee.attacker.hitSpecialRules;
-        const reRollMisses = state.melee.attacker.hitRules.reRollMisses;
-        const reRollOnes = state.melee.attacker.hitRules.reRollOnes;
-        const baseHitValue = state.melee.attacker.WS;
-        const explodingHits = state.melee.attacker.hitRules.exploding;
-        const explodingValue = Number(state.melee.attacker.hitRules.explodesOn);
-        const toHitModifier = Number(state.melee.attacker.hitRules.mod);
-
-        if (isNaN(attacks)) {
-            console.log('attacks is NaN, not supported yet');
-            return;
-        }
-
-        // Do special rules
-        if (!hasHitRules) {
-            const hitChance = 1 - ((baseHitValue - 1) / 6)
-            const hits = numRolls * hitChance;
-
-            resultSet.hitCount = hits;
-            resultSet.missCount = numRolls - hits;
-            resultSet.hitChance = hitChance;
-        } else {
-            const percent = numRolls * (1 / 6);
-            const rolls = [0, percent, percent, percent, percent, percent, percent];
-
-            // Handle Base ReRolls
-            if (reRollMisses) {
-                this.reRollMisses(rolls, baseHitValue);
-            } else if (reRollOnes) {
-                this.reRollOnes(rolls);
-            }
-
-            // Handle Exploding Rolls
-            if (explodingHits && explodingValue) {
-                resultSet.exploded = true;
-
-                let additionalRolls = 0;
-                for (let i = explodingValue; i < rolls.length; i++) {
-                    additionalRolls += rolls[i];
-                }
-                resultSet.explodingRolls = additionalRolls;
-
-                // Create new roll pool
-                const newPercent = additionalRolls * (1 / 6);
-                const explodedRolls = [0, newPercent, newPercent, newPercent, newPercent, newPercent, newPercent];
-
-                // Handle ReRolls for new pool
-                if (reRollMisses) {
-                    this.reRollMisses(explodedRolls, baseHitValue);
-                } else if (reRollOnes) {
-                    this.reRollOnes(explodedRolls);
-                }
-
-                // Add to base pool
-                for (let i = 1; i < explodedRolls.length; i++) {
-                    rolls[i] += explodedRolls[i];
-                }
-            }
-
-            let hits = 0;
-            let misses = rolls[1];
-            const hitMod = toHitModifier;
-            for (let i = 2; i < rolls.length; i++) {
-                if ((i + hitMod) >= baseHitValue) {
-                    hits += rolls[i];
-                    console.log('hit: ' + (i + hitMod));
-                } else {
-                    misses += rolls[i];
-                }
-            }
-
-            resultSet.hitCount = hits;
-            resultSet.missCount = misses;
-            resultSet.hitChance = hits / (hits + misses);
-        }
-    }
-
-    processToWound(state, resultSet) {
+    processToWoundRanged(state, resultSet) {
         const strength = Number(state.weapon.strength);
         const toughness = Number(state.defender.toughness);
         const numRolls = resultSet.hitCount;
@@ -249,12 +169,178 @@ class StatisticalEngine {
         }
     }
 
-    processSaves(state, resultSet) {
-        const armorSave = Number(state.defender.armorSave);
-        console.log(armorSave)
-        const armorPen = Number(state.weapon.armorPen);
 
-        if ((!armorSave || armorSave + armorPen > 6) && !state.defender.hasInvulnerable) {
+    // Melee Section
+    processToHitMelee(state, resultSet) {
+        const models = Number(state.melee.attacker.models);
+        let attacks = Number(state.melee.attacker.attacks);
+        if (isNaN(attacks)) {
+            const tokens = state.melee.attacker.attacks.toLowerCase().split('d');
+            let prefix = Number(tokens[0]) ? Number(tokens[0]) : 1;
+            let postfix = Number(tokens[1]) ? Number(tokens[1]) : 6;
+
+            if (prefix && postfix) {
+                attacks = prefix * ((postfix + 1) / 2);
+            } else {
+                console.log('error: ', attacks, ' could not be parsed as attacks');
+                return;
+            }
+        }
+        console.log('Attack count is ', attacks)
+
+        const numRolls = models * attacks;
+        const baseHitValue = state.melee.attacker.WS;
+
+        const hasHitRules = state.melee.attacker.hitSpecialRules;
+        let hitSpecialRules = {};
+        if (hasHitRules) {
+            hitSpecialRules = {
+                reRollMisses: state.melee.attacker.hitRules.reRollMisses,
+                reRollOnes: state.melee.attacker.hitRules.reRollOnes,
+                explodingHits: state.melee.attacker.hitRules.exploding,
+                explodingValue: Number(state.melee.attacker.hitRules.explodesOn),
+                toHitModifier: Number(state.melee.attacker.hitRules.mod),
+            };
+        }
+
+
+        // Do special rules
+        if (!hasHitRules) {
+            const hitChance = 1 - ((baseHitValue - 1) / 6)
+            const hits = numRolls * hitChance;
+
+            resultSet.hitCount = hits;
+            resultSet.missCount = numRolls - hits;
+            resultSet.hitChance = hitChance;
+        } else {
+            const percent = numRolls * (1 / 6);
+            const rolls = [0, percent, percent, percent, percent, percent, percent];
+
+            // Handle Base ReRolls
+            if (hitSpecialRules.reRollMisses) {
+                this.reRollMisses(rolls, baseHitValue);
+            } else if (hitSpecialRules.reRollOnes) {
+                this.reRollOnes(rolls);
+            }
+
+            // Handle Exploding Rolls
+            if (hitSpecialRules.explodingHits && hitSpecialRules.explodingValue) {
+                resultSet.exploded = true;
+
+                let additionalRolls = 0;
+                for (let i = hitSpecialRules.explodingValue; i < rolls.length; i++) {
+                    additionalRolls += rolls[i];
+                }
+                resultSet.explodingRolls = additionalRolls;
+
+                // Create new roll pool
+                const newPercent = additionalRolls * (1 / 6);
+                const explodedRolls = [0, newPercent, newPercent, newPercent, newPercent, newPercent, newPercent];
+
+                // Handle ReRolls for new pool
+                if (hitSpecialRules.reRollMisses) {
+                    this.reRollMisses(explodedRolls, baseHitValue);
+                } else if (hitSpecialRules.reRollOnes) {
+                    this.reRollOnes(explodedRolls);
+                }
+
+                // Add to base pool
+                for (let i = 1; i < explodedRolls.length; i++) {
+                    rolls[i] += explodedRolls[i];
+                }
+            }
+
+            let hits = 0;
+            let misses = rolls[1];
+            const hitMod = hitSpecialRules.toHitModifier ? hitSpecialRules.toHitModifier : 0;
+            for (let i = 2; i < rolls.length; i++) {
+                if ((i + hitMod) >= baseHitValue) {
+                    hits += rolls[i];
+                } else {
+                    misses += rolls[i];
+                }
+            }
+
+            resultSet.hitCount = hits;
+            resultSet.missCount = misses;
+            resultSet.hitChance = hits / (hits + misses);
+        }
+    }
+
+    processToWoundMelee(state, resultSet) {
+        let strength = Number(state.melee.weapon.strength);
+        if (isNaN(strength)) {
+            const tokens = state.melee.weapon.strength.toLowerCase().split('x');
+            const multi = Number(tokens[1]);
+            if (!multi || isNaN(multi)) {
+                console.log('cannot parse ', state.melee.weapon.strength, ' as a strength');
+                return;
+            }
+
+            strength = Number(state.melee.attacker.strength) * multi;
+        }
+        if (!strength || strength === 0) {
+            strength = Number(state.melee.attacker.strength);
+        }
+        console.log('Attack strength is ', strength);
+
+        const toughness = Number(state.defender.toughness);
+        const numRolls = resultSet.hitCount;
+        const hasWoundRules = state.melee.weapon.woundSpecialRules;
+        let woundSpecialRules = {};
+        if (hasWoundRules) {
+            woundSpecialRules = {
+                reRollMisses: state.melee.weapon.woundRules.reRollMisses,
+                reRollOnes: state.melee.weapon.woundRules.reRollOnes,
+                mod: Number(state.melee.weapon.woundRules.mod),
+            };
+        }
+
+        // Do special rules
+        if (hasWoundRules) {
+            const woundRollNeeded = this.calculateWoundRoll(strength, toughness);
+            const woundChance = 1 - ((woundRollNeeded - 1) / 6);
+            const wounds = numRolls * woundChance;
+
+            resultSet.woundCount = wounds;
+            resultSet.woundFailCount = numRolls - wounds;
+            resultSet.woundSuccessChance = woundChance;
+        } else {
+            const percent = numRolls * (1 / 6);
+            const rolls = [0, percent, percent, percent, percent, percent, percent];
+
+            // Handle Base ReRolls
+            if (hasWoundRules.reRollMisses) {
+                this.reRollMisses(rolls, this.calculateWoundRoll(strength, toughness));
+            } else if (hasWoundRules.reRollOnes) {
+                this.reRollOnes(rolls);
+            }
+
+            let wounds = 0;
+            let fails = rolls[1];
+            const hitMod = woundSpecialRules.mod ? woundSpecialRules.mod : 0;
+            for (let i = 2; i < rolls.length; i++) {
+                if ((i + hitMod) >= this.calculateWoundRoll(strength, toughness)) {
+                    wounds += rolls[i];
+                } else {
+                    fails += rolls[i];
+                }
+            }
+
+            resultSet.woundCount = wounds;
+            resultSet.woundFailCount = fails;
+            resultSet.woundSuccessChance = wounds / (wounds + fails);
+        }
+    }
+
+    // Common Section
+    processSaves(state, resultSet, type) {
+        const armorSave = Number(state.defender.armorSave) !== 0 ? Number(state.defender.armorSave) : 7;
+        console.log(armorSave)
+        const armorPen = Number(state[type].weapon.armorPen);
+        console.log(armorPen)
+
+        if ((armorSave + armorPen > 6) && !state.defender.hasInvulnerable) {
             resultSet.failedSaves = resultSet.woundCount;
             resultSet.passedSaves = 0;
 
@@ -279,9 +365,23 @@ class StatisticalEngine {
         }
     }
 
+    processDamage(state, resultSet, type) {
+        let weaponDamage = Number(state[type].weapon.damage);
+        if (isNaN(weaponDamage)) {
+            const tokens = state[type].weapon.damage.toLowerCase().split('d');
+            let prefix = Number(tokens[0]) ? Number(tokens[0]) : 1;
+            let postfix = Number(tokens[1]) ? Number(tokens[1]) : 6;
 
-    processDamage(state, resultSet) {
-        const weaponDamage = Number(state.weapon.damage);
+            if (prefix && postfix) {
+                weaponDamage = prefix * ((postfix + 1) / 2);
+            } else {
+                console.log('weaponDamage error: ', weaponDamage, ' could not be parsed');
+                return;
+            }
+        }
+        console.log('Attack damage is ', weaponDamage)
+
+
         const failedSaves = resultSet.failedSaves;
         resultSet.damagePerWound = weaponDamage;
 

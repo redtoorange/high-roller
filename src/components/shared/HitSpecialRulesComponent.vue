@@ -26,46 +26,52 @@
 <script>
 export default {
     name: "HitSpecialRulesComponent",
+    props: {
+      type: {
+          type: String,
+          required: true
+      }
+    },
 
     computed: {
         mod: {
             get() {
-                return this.$store.state.attacker.ranged.hitRules.mod
+                return this.$store.state[this.type].attacker.hitRules.mod
             },
             set(value) {
-                this.$store.commit('ranged/attacker/setMod', value)
+                this.$store.commit(`${this.type}/attacker/setMod`, value)
             }
         },
         reRollOnes: {
             get() {
-                return this.$store.state.attacker.ranged.hitRules.reRollOnes;
+                return this.$store.state[this.type].attacker.hitRules.reRollOnes;
             },
             set(value) {
-                this.$store.commit('ranged/attacker/setReRollOnes', value)
+                this.$store.commit(`${this.type}/attacker/setReRollOnes`, value)
             }
         },
         reRollMisses: {
             get() {
-                return this.$store.state.attacker.ranged.hitRules.reRollMisses;
+                return this.$store.state[this.type].attacker.hitRules.reRollMisses;
             },
             set(value) {
-                this.$store.commit('ranged/attacker/setReRollMisses', value)
+                this.$store.commit(`${this.type}/attacker/setReRollMisses`, value)
             }
         },
         exploding: {
             get() {
-                return this.$store.state.attacker.ranged.hitRules.exploding;
+                return this.$store.state[this.type].attacker.hitRules.exploding;
             },
             set(value) {
-                this.$store.commit('ranged/attacker/setExploding', value)
+                this.$store.commit(`${this.type}/attacker/setExploding`, value)
             }
         },
         explodesOn: {
             get() {
-                return this.$store.state.attacker.ranged.hitRules.explodesOn;
+                return this.$store.state[this.type].attacker.hitRules.explodesOn;
             },
             set(value) {
-                this.$store.commit('ranged/attacker/setExplodesOn', value)
+                this.$store.commit(`${this.type}/attacker/setExplodesOn`, value)
             }
         }
     }
